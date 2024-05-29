@@ -1101,11 +1101,11 @@ class BaseLearner(ExportMixin, DistillationMixin, RealtimeMixin):
             log_filter = LogFilter(blacklist_msgs)
             with apply_log_filter(log_filter):
                 trainer = pl.Trainer(
-                    accelerator="gpu" if num_gpus > 0 else OmegaConf.select(config, "env.accelerator", default="auto"),
-                    devices=num_gpus if num_gpus > 0 else "auto",
-                    num_nodes=config.env.num_nodes,
+                    accelerator="cpu",
+                    devices=1,
+                    num_nodes=1,
                     precision=precision,
-                    strategy=strategy if strategy else "auto",
+                    strategy=None,
                     benchmark=False,
                     deterministic=config.env.deterministic,
                     max_epochs=config.optimization.max_epochs,
@@ -1141,13 +1141,11 @@ class BaseLearner(ExportMixin, DistillationMixin, RealtimeMixin):
 
             with apply_log_filter(log_filter):
                 trainer = pl.Trainer(
-                    accelerator="gpu"
-                    if num_gpus > 0
-                    else OmegaConf.select(self._config, "env.accelerator", default="auto"),
-                    devices=num_gpus if num_gpus > 0 else "auto",
-                    num_nodes=self._config.env.num_nodes,
+                    accelerator="cpu",
+                    devices=1,
+                    num_nodes=1,
                     precision=precision,
-                    strategy=strategy,
+                    strategy=None,
                     benchmark=False,
                     enable_progress_bar=False if barebones else self._enable_progress_bar,
                     deterministic=self._config.env.deterministic,

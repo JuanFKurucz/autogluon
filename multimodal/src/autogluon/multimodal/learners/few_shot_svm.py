@@ -250,11 +250,11 @@ class FewShotSVMLearner(BaseLearner):
 
         with apply_log_filter(log_filter):
             trainer = pl.Trainer(
-                accelerator="gpu" if num_gpus > 0 else "auto",
-                devices=get_available_devices(num_gpus, config.env.auto_select_gpus),
-                num_nodes=config.env.num_nodes,
+                accelerator="cpu",
+                devices=1,
+                num_nodes=1,
                 precision=precision,
-                strategy=strategy,
+                strategy=None,
                 benchmark=False,
                 enable_progress_bar=False if barebones else enable_progress_bar,
                 deterministic=config.env.deterministic,
